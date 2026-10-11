@@ -1,0 +1,41 @@
+class Solution:
+    def reverseList(self, head):
+        prev = None
+        curr = head
+
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+
+        return prev
+
+    def reorderList(self, head):
+        if not head or not head.next:
+            return
+
+        # Step 1: Find the middle
+        slow = head
+        fast = head
+
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Step 2: Reverse the second half
+        second = self.reverseList(slow.next)
+        slow.next = None
+
+        # Step 3: Merge both halves alternately
+        first = head
+
+        while second:
+            temp1 = first.next
+            temp2 = second.next
+
+            first.next = second
+            second.next = temp1
+
+            first = temp1
+            second = temp2
